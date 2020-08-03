@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchForm from '../SearchForm/SearchForm';
+import ResultSection from '../ResultSection/ResultSection';
 
 const baseURL = "https://swapi-thinkful.herokuapp.com/api/";
 
@@ -31,7 +32,7 @@ export default class SearchScreen extends React.Component {
       })
     })
     Promise.all(results)
-    .then((data) => data.map(d => console.log(d.results)));
+    .then((data) => this.setState({searchResults: data}));
   }
 
   searchDatabase = (database, searchTerm) => {
@@ -40,16 +41,26 @@ export default class SearchScreen extends React.Component {
     .then(res => { return res.results})
   }
 
+  renderSections = () => {
+    const {searchResults} = this.state;
+    return searchResults.map((results, index) => {
+      return <ResultSection key={index} title={results.name} results={results.results}/>
+    });
+  }
+
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: {}
+      searchResults: []
     }
   }
 
   render() {
     return (
-      <SearchForm onSubmit={this.search}/>
+      <>
+        <SearchForm onSubmit={this.search}/>
+        {this.renderSections()}
+      </>
     );
   }
 }
