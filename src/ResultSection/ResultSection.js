@@ -8,34 +8,34 @@ import Vechicles from '../Results/Vechicles';
 
 export default class ResultSection extends React.Component {
 
-    renderResults = (title, results) => {
-        let jsx = '';
+    renderResults = (title, result, index) => {
         switch(title) {
             case 'people':
-                break;
+                return <PeopleResults key={index} result={result}/>
             case 'planets':
-                break;
-            case 'film':
-                break;
+                return <Planets key={index} result={result}/>
+            case 'films':
+                return <Films key={index} result={result}/>
             case 'species':
-                break;
+                return <Species key={index} result={result}/>
             case 'vehicles':
-                break;
+                return <Vechicles key={index} result={result}/>
             case 'starships':
-                break;
+                return <Starships key={index} result={result}/>
             default:
-                break;
-
+                return ''
         }
-        return jsx;
     }
 
     render() {
         const {title, results} = this.props;
+        console.log(results);
         return (
             <>
                 <h2>{title.toUpperCase()}</h2>
-                {this.renderResults(title, results)}
+                {results.map((res, index) => {
+                    return this.renderResults(title, res, index);
+                })}
             </>
         );
     };
